@@ -1,0 +1,12 @@
+procedure test8 is
+	integer x;
+	integer y;
+	integer z;
+	record a;
+	record b;
+	record c;
+begin
+	x := in();
+	out(4);
+	a:=new record[3];
+end
