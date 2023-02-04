@@ -1,5 +1,0 @@
-procedure err07 is
-	integer x;
-begin
-	x = in();
-end
