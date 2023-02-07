@@ -8,7 +8,7 @@
 * Put headers for print functions here
 *
 */
-
+void printProcedure(struct nodeProcedure*);
 
 
 #endif

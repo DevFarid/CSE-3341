@@ -57,7 +57,7 @@ static void tokenString(char* str, int current) {
 
 // If the current token is something other than expected,
 // prints a meaningful error message and halts the program
-static void expectedToken(int expected) {
+static int expectedToken(int expected) {
 	int actual = currentToken();
 	
     if (actual != expected) {
@@ -69,14 +69,58 @@ static void expectedToken(int expected) {
 		
         printf("Error: expected %s but recieved %s", expectedStr, actualStr);
         exit(0);
-    }
+    } else {
+		return 1;
+	}
 }
 
 
 /*
-*
-* Parse functions go here
-*
+*	Traveses the scanner entirely via a while loop.
 */
+void traverseEntirely() {
+	/* STRING representation of a token. */
+	char str[10];
 
+	/* When the token is an ID, CONST, or possbile an ERROR token. */
+	char value[20]; 
 
+	int current;
+	while(currentToken() != EOS && currentToken() != ERROR) {
+		current = currentToken();
+		tokenString(str, current);
+		printf("%s\n", str);
+
+		if(current == ID) {
+			getId(value);
+			printf("[%s]", value);
+		} else if(current == CONST) {
+			int value = getConst();
+			printf("[%d]", value);
+		} else if(current == ERROR) {
+			printf("We received an ERROR token, but we do not know the exactly details yet.\n");
+		}
+		printf("\n");
+    	nextToken();
+	}
+}
+
+void parseProcedure(struct nodeProcedure* root) {
+	char value[20]; 
+	if(expectedToken(PROCEDURE)) {
+		nextToken();
+		if(expectedToken(ID)) {
+			getId(root->name);
+			if(root->name != NULL) {
+				nextToken();
+				if(expectedToken(IS)) {
+					printf("PROCEDURE %s IS\n", root->name);
+					/* At this point we have verified that the tokens ares `PROCEDURE name IS` */
+				}
+			} else {
+				fprintf(stderr, "Expected a program name, but was NULL\n");
+			}
+		}
+	}
+
+}

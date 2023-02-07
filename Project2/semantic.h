@@ -9,7 +9,7 @@
 * Put headers for semantic check functions here
 *
 */
-
+void semanticProcedure(struct nodeProcedure*);
 
 
 #endif

@@ -15,7 +15,8 @@
 
 
 static void indents(int indent) {
-	for (int i=0; i<indent; i++) {
+	int i;
+	for (i=0; i<indent; i++) {
 		printf("  ");
 	}
 }
@@ -26,3 +27,6 @@ static void indents(int indent) {
 *
 */
 
+void printProcedure(struct nodeProcedure* root) {
+
+}

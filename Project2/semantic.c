@@ -13,4 +13,9 @@
 *
 */
 
+/* Dynamic char* array to hold the used identifiers */
+static char** idHistory;
 
+void semanticProcedure(struct nodeProcedure* root) {
+
+}
