@@ -123,13 +123,17 @@ void parseProcedure(struct nodeProcedure* root) {
 						At this point we have verified that the tokens ares `PROCEDURE name IS` 
 						We can assume that now the declaration starts.
 					*/
-					printf("made it here");
+					if(root->declarations == NULL)
+						printf("Error: Allocation failure!\n");
+				
 					parseDeclSeq(root->declarations);
+					printf("%d\n",root->declarations->decl->type);
+					
 					/* 
 						If the next token is `BEGIN` declaration area has ended.
 					*/
 					if(expectedToken(BEGIN)) {
-						parseStmtSeq(root->statements); 
+						// parseStmtSeq(root->statements); 
 					}
 
 				}
@@ -143,11 +147,11 @@ void parseProcedure(struct nodeProcedure* root) {
 
 void parseDeclSeq(struct nodeDeclSeq* declarationBlock) {
 	nextToken();
-	printf("currentTOken:%s", currentToken());
 	char value[20]; 
-
+	
 	declarationBlock->decl = calloc(1, sizeof(struct nodeDecl));
 	if(currentToken() == INTEGER) {
+		nextToken();
 		if(currentToken() == ID) {
 			getId(value);
 			declarationBlock->decl->type = 0; 
@@ -156,6 +160,7 @@ void parseDeclSeq(struct nodeDeclSeq* declarationBlock) {
 			printf("Expected ID after INTEGER declaration, but received none.");
 		}
 	} else if(currentToken() == RECORD) {
+		nextToken();
 		if(currentToken() == ID) {
 			getId(value);
 			declarationBlock->decl->type = 0; 
