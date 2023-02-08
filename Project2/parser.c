@@ -107,6 +107,7 @@ void traverseEntirely() {
 
 void parseProcedure(struct nodeProcedure* root) {
 	char value[20]; 
+
 	if(expectedToken(PROCEDURE)) {
 		nextToken();
 		if(expectedToken(ID)) {
@@ -115,7 +116,22 @@ void parseProcedure(struct nodeProcedure* root) {
 				nextToken();
 				if(expectedToken(IS)) {
 					printf("PROCEDURE %s IS\n", root->name);
-					/* At this point we have verified that the tokens ares `PROCEDURE name IS` */
+					
+					root->declarations = calloc(1, sizeof(struct nodeDeclSeq));
+					root->statements = calloc(1, sizeof(struct nodeStmtSeq));
+					/* 
+						At this point we have verified that the tokens ares `PROCEDURE name IS` 
+						We can assume that now the declaration starts.
+					*/
+					printf("made it here");
+					parseDeclSeq(root->declarations);
+					/* 
+						If the next token is `BEGIN` declaration area has ended.
+					*/
+					if(expectedToken(BEGIN)) {
+						parseStmtSeq(root->statements); 
+					}
+
 				}
 			} else {
 				fprintf(stderr, "Expected a program name, but was NULL\n");
@@ -123,4 +139,33 @@ void parseProcedure(struct nodeProcedure* root) {
 		}
 	}
 
+}
+
+void parseDeclSeq(struct nodeDeclSeq* declarationBlock) {
+	nextToken();
+	printf("currentTOken:%s", currentToken());
+	char value[20]; 
+
+	declarationBlock->decl = calloc(1, sizeof(struct nodeDecl));
+	if(currentToken() == INTEGER) {
+		if(currentToken() == ID) {
+			getId(value);
+			declarationBlock->decl->type = 0; 
+			declarationBlock->decl->id = value; 
+		} else {
+			printf("Expected ID after INTEGER declaration, but received none.");
+		}
+	} else if(currentToken() == RECORD) {
+		if(currentToken() == ID) {
+			getId(value);
+			declarationBlock->decl->type = 0; 
+			declarationBlock->decl->id = value; 
+		} else {
+			printf("Expected ID after RECORD declaration, but received none.");
+		}
+	}
+}
+
+void parseStmtSeq(struct nodeStmtSeq* stmts) {
+	printf("it worked");
 }

@@ -88,8 +88,8 @@ struct nodeDeclSeq {
 };
 
 struct nodeProcedure {
-    struct nodeDeclSeq* ds;
-    struct nodeStmtSeq* ss;
+    struct nodeDeclSeq* declarations;
+    struct nodeStmtSeq* statements;
     char* name;
 };
 

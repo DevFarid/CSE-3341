@@ -8,5 +8,7 @@
 *
 */
 void parseProcedure(struct nodeProcedure*);
+void parseStmtSeq(struct nodeStmtSeq*);
+void parseDeclSeq(struct nodeDeclSeq*);
 
 #endif
