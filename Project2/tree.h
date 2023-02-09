@@ -7,6 +7,29 @@
 *
 */
 
+
+/*
+    LANGUAGE GRAMMAR
+
+    <procedure> ::= procedure ID is <decl-seq> begin <stmt-seq> end
+    <decl-seq> ::= <decl > | <decl><decl-seq>
+    <stmt-seq> ::= <stmt> | <stmt><stmt-seq>
+    <decl> ::= <decl-integer> | <decl-record>
+    <decl-integer> ::= integer ID ;
+    <decl-record> ::= record ID ;
+    <stmt> ::= <assign> | <if> | <loop> | <out>
+    <assign> ::= id <index> := <expr> ; | id := new record [ <expr> ]; | id := record id;
+    <index> ::= [ <expr> ] | epsilon
+    <out> ::= out ( <expr> ) ;
+    <if> ::= if <cond> then <stmt-seq> end | if <cond> then <stmt-seq> else <stmt-seq> end
+    <loop> ::= while <cond> do <stmt-seq> end
+    <cond> ::= <cmpr> | not <cond> | <cmpr> or <cond> | <cmpr> and <cond>
+    <cmpr> ::= <expr> = <expr> | <expr> < <expr>
+    <expr> ::= <term> | <term> + <expr> | <term> – <expr>
+    <term> ::= <factor> | <factor> * <term> | <factor> / <term>
+    <factor> ::= id | id [ <expr> ] | const | ( <expr> ) | in ( )
+*/
+
 struct nodeExpr {
     int type; // 0 = term, 1 = plus, 2 = minus
     struct nodeTerm* t;

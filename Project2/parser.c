@@ -119,6 +119,7 @@ void parseProcedure(struct nodeProcedure* root) {
 					
 					root->declarations = calloc(1, sizeof(struct nodeDeclSeq));
 					root->statements = calloc(1, sizeof(struct nodeStmtSeq));
+
 					/* 
 						At this point we have verified that the tokens ares `PROCEDURE name IS` 
 						We can assume that now the declaration starts.
@@ -127,7 +128,7 @@ void parseProcedure(struct nodeProcedure* root) {
 						printf("Error: Allocation failure!\n");
 				
 					parseDeclSeq(root->declarations);
-					printf("%d\n",root->declarations->decl->type);
+					// printf("%d\n",root->declarations->decl->type);
 					
 					/* 
 						If the next token is `BEGIN` declaration area has ended.
@@ -148,27 +149,48 @@ void parseProcedure(struct nodeProcedure* root) {
 void parseDeclSeq(struct nodeDeclSeq* declarationBlock) {
 	nextToken();
 	char value[20]; 
-	
-	declarationBlock->decl = calloc(1, sizeof(struct nodeDecl));
-	if(currentToken() == INTEGER) {
-		nextToken();
-		if(currentToken() == ID) {
-			getId(value);
-			declarationBlock->decl->type = 0; 
-			declarationBlock->decl->id = value; 
-		} else {
-			printf("Expected ID after INTEGER declaration, but received none.");
+
+	struct nodeDeclSeq* head = declarationBlock;
+
+	while(currentToken() != BEGIN) {
+		struct nodeDeclSeq* declSequence = calloc(1, sizeof(struct nodeDeclSeq));
+		struct nodeDecl* nodeDecl = calloc(1, sizeof(struct nodeDecl));
+
+		if(currentToken() == INTEGER) {
+			nextToken();
+
+			if(expectedToken(ID)) {
+				getId(value);
+				// int type 0 is INTEGER
+				nodeDecl->type = 0; 
+				nodeDecl->id = value;
+
+			} else {
+				printf("Expected ID after INTEGER declaration, but received none.");
+			}
+
+		} else if(currentToken() == RECORD) {
+			nextToken();
+
+			if(expectedToken(ID)) {
+				getId(value);
+				// int type 0 is RECORD
+				nodeDecl->type = 1; 
+				nodeDecl->id = value;
+				printf("RECORD %s\n", value);
+
+			} else {
+				printf("Expected ID after RECORD declaration, but received none.");
+			}
 		}
-	} else if(currentToken() == RECORD) {
+		
+		declSequence->decl = nodeDecl;
+		head->next = declSequence;
+		head = declSequence->next;
+
 		nextToken();
-		if(currentToken() == ID) {
-			getId(value);
-			declarationBlock->decl->type = 0; 
-			declarationBlock->decl->id = value; 
-		} else {
-			printf("Expected ID after RECORD declaration, but received none.");
-		}
 	}
+
 }
 
 void parseStmtSeq(struct nodeStmtSeq* stmts) {
