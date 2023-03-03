@@ -1,0 +1,26 @@
+ID[program]
+ID[int]
+ID[X]
+ID
+ID[Y]
+ID
+ID[XY]
+SEMICOLON
+ID[a]
+LPAREN
+ID[b]
+ID
+ID[c]
+ID
+ID[d]
+RPAREN
+BEGIN
+ID[a]
+EQUAL
+ID[a]
+ADD
+ID[b]
+ADD
+ID[c]
+SEMICOLON
+Error: } is not a valid symbol!
