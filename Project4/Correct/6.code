@@ -1,0 +1,23 @@
+procedure c6 and
+	procedure x ( x, y ) is
+		integer a;
+	begin
+		if y[0]<1 then
+			x[0] := 0; 
+		else 
+			y[0] := y[0]-1; 
+			begin x(x, y); 
+		end
+	end
+is
+	record x;
+	record y;
+begin
+	x := new record[1];
+	y := new record[1];
+	x[0] := 10;
+	y[0] := 5;
+	begin x(x, y);
+	out(x);
+	out(y);
+end

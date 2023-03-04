@@ -1,0 +1,15 @@
+procedure c1 and
+  procedure A ( r ) is
+      integer a;
+  begin
+      if r < 9 then
+        r:=in();
+        begin A(r);
+      end
+  end
+is
+  record x;
+begin
+  x:=new record [1];
+  x[0]:=10;
+end

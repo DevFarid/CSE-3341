@@ -1,0 +1,28 @@
+procedure c8 and
+	procedure A ( r, s ) is
+		integer a;
+	begin
+		r[0] := 3; 
+		s[0] := 5; 
+	end
+	procedure B ( r, s ) is
+		integer a;
+	begin
+		r[0] := 7; 
+		s[0] := 11; 
+	end
+is
+	record x;
+	record y;
+begin
+	x := new record[1];
+	y := new record[1];
+	x[0] := 1;
+	y[0] := 1;
+	begin A(x, y);
+	out(x[0]);
+	out(y[0]);
+	begin B(x, y);
+	out(x[0]);
+	out(y[0]);
+end
