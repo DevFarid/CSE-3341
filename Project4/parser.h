@@ -43,4 +43,6 @@ void parseTerm(struct nodeTerm* term);
 
 void parseFactor(struct nodeFactor* factor);
 
+int contains(char*,char**);
+
 #endif

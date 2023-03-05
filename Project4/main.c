@@ -11,6 +11,8 @@
 
 static char* filename;
 
+void freeEverything(struct nodeProcedure*);
+
 int main(int argc, char *argv[]) {  
   
   // Copy the filename to a static char*, to then pass to execute for whenever IN() is called, so we can open a 2nd scanner.
@@ -21,21 +23,29 @@ int main(int argc, char *argv[]) {
   struct nodeProcedure p;
 
   //printf("PARSING\n");
-  
   parseProcedure(&p);
-  // printf("PRINTING\n");
   
+  // printf("SEMANTIC CHECKS\n"")
   // semanticProcedure(&p);
 
-  printProcedure(&p);
 
   // printf("EXECUTING\n");
+  executeProcedure(&p, filename);
 
-  // executeProcedure(&p, filename);
+  // printf("PRINTING\n");
+  // printProcedure(&p);
+
 
   // free(&p); // Can't really free a non-heap object. 
-  
+  // freeEverything(&p);
+
   // Scanning, parsing, printing is done, release memory
+
+
   scanner_close();
   return 0;
+}
+
+void freeEverything(struct nodeProcedure* p) {
+
 }

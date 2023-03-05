@@ -21,6 +21,8 @@ static int** rValues;	// 2D array where a record identifier may store its value 
 static int rLen;		// array length for record lookup and value.
 static int* individualRValuesSize;
 
+static struct nodeFunc** funcLookup;	// function lookup
+static int fLen;		// array length for function lookup.
 
 /*
 *
@@ -50,6 +52,16 @@ int searchRecord(char* iden) {
 	return location;
 }
 
+int searchFunction(char *iden) {
+	int location = -1, i;
+	for (i=0; i<fLen; i++) {
+		if (strcmp(funcLookup[i]->name, iden)==0) {
+			location = i;
+		}
+	}
+	return location;
+}
+
 static int* retrieveValueRec(char* identifier) {
 	int identifierExists = searchRecord(identifier);
 
@@ -71,12 +83,54 @@ static int* retrieveValueRec(char* identifier) {
 void memory_init() {
 	iLen = 0; 
 	rLen = 0;
+	fLen = 0;
 
 	iLookup = (char**) calloc(1, sizeof(char*));
 	iValues = (int*) calloc(1, sizeof(int));
 
 	rLookup = (char**) calloc(1, sizeof(char*));
 	rValues = (int**) calloc(1, sizeof(int*));
+
+	funcLookup = (struct nodeFunc**) calloc(1, sizeof(struct nodeFunc*));
+}
+
+void memory_free() {
+	int i;
+	for(i = 0; i < iLen; i++) {
+		free(iLookup[i]);
+	}
+
+	for(i = 0; i < rLen; i++) {
+		free(rLookup[i]);
+		free(rValues[i]);
+	}
+
+	free(iLookup);
+	free(iValues);
+
+	free(rLookup);
+	free(rValues);
+
+}
+
+void declareFunc(struct nodeFunc* func) {
+
+	if(searchFunction(func->name) == -1) {
+		fLen++;
+		
+		struct nodeFunc** newBuffer = realloc(funcLookup, (fLen * sizeof(struct nodeFunc*)) );
+
+		if(newBuffer == NULL) {
+			printf("ERROR: REALLOCATION ERROR INSIDE declareFunc().\n");
+			exit(1);
+		}
+
+		funcLookup = newBuffer;
+		funcLookup[fLen - 1] = func;
+	} else {
+		printf("ERROR: Procedure %s already declared.\n", func->name);
+		exit(1);
+	}
 }
 
 // Handle an integer or record declaration
@@ -194,5 +248,29 @@ void allocateRecord(char* iden, int size) {
 		rValues[recordExists] = calloc(size, sizeof(int));
 		individualRValuesSize[recordExists] = size - 1;
 	}
+
+}
+
+void callFunc(char* iden, int numberOfParameters, char** parameters) {
+	
+	int funcExists = searchFunction(iden);
+	if(funcExists == -1) {
+		printf("ERROR: procedure %s does not exist.\n", iden);
+		exit(1);
+	}
+
+	if(numberOfParameters != funcLookup[funcExists]->numOfParamters) {
+		printf("ERROR: procedure %s was called with %d parameters, but it was declared with %d parameters.\n", iden, numberOfParameters, funcLookup[funcExists]->numOfParamters);
+		exit(1);
+	}
+
+	int i;
+	for (i = 0; i < numberOfParameters; i++) {
+		if(searchRecord(parameters[i]) == -1) {
+			printf("ERROR: The record %s that was passed to the procedure %s not exist.\n", parameters[i], iden);
+			exit(1);
+		}
+	}
+	
 
 }

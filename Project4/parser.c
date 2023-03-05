@@ -166,9 +166,13 @@ void parseFunc(struct nodeFunc* f) {
 			f->parameters = tempParamNamesBuffer;
 
 			// TODO: check if each parameter is distinct from one another.
-			f->parameters[f->numOfParamters] = strdup(paramId);
-
-			f->numOfParamters++;
+			if(contains(paramId, f->parameters) == 0) {
+				f->parameters[f->numOfParamters] = strdup(paramId);
+				f->numOfParamters++;
+			} else {
+				printf("Error: duplicate parameter name found in procedure %s.\n", f->name);
+				exit(1);
+			}
 		}
 		nextToken();
 	}
@@ -511,4 +515,16 @@ void parseFactor(struct nodeFactor* factor) {
 		expectedToken(RPAREN);
 		nextToken();
 	}
+}
+
+
+int contains(char*incomdingParameter, char** parameters) {
+	int i = 0;
+	while (parameters[i] != NULL) {
+		if (strcmp(incomdingParameter, parameters[i]) == 0) {
+			return 1;
+		}
+		i++;
+	}
+	return 0;
 }

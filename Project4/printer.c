@@ -33,6 +33,7 @@ void printProcedure(struct nodeProcedure* p) {
 	if(p->doesHaveFunctions == 1) {
 		printf(" and\n");
 		printFuncSeq(p->funcs, 1);
+		free(p->funcs);
 		printf("is\n");
 	} else {
 		printf(" is\n");
