@@ -1,0 +1,20 @@
+procedure c7 and
+	procedure A ( r ) is 
+		integer a;
+	begin
+		r[0] := 9;
+	end
+	procedure B ( s ) is
+		integer a;
+	begin
+		s[0] := 7;
+		begin A(s);
+	end
+is
+	record q;
+begin
+	q := new record[1];
+	q[0] := 5;
+	begin B(q);
+	out(q[0]);
+end

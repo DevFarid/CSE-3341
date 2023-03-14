@@ -1,0 +1,14 @@
+procedure c2 and
+	procedure A ( r ) is
+		integer x;
+	begin
+		r[0] := 7;
+	end
+is
+	record x;
+begin
+	x := new record[1];
+	x := 1;
+	begin A(x);
+	out(x[0]);
+end
