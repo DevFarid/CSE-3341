@@ -5,6 +5,7 @@ procedure c2 and
 		r[0] := 7;
 	end
 is
+	record z;
 	record x;
 begin
 	x := new record[1];

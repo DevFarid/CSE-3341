@@ -1,5 +1,6 @@
 #include "tree.h"
 
+#define MAX_STACK 20
 #ifndef MEMORY_H
 #define MEMORY_H
 

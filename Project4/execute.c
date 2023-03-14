@@ -50,6 +50,7 @@ void executeProcedure(struct nodeProcedure* p, char* file) {
 	originalFile = strdup(file);
 	handleFile(file);
 
+	initFuncLookup();
 	memory_init();
 
 	executeFuncDecSeq(p->funcs);

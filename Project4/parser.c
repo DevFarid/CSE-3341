@@ -271,6 +271,9 @@ void parseStmt(struct nodeStmt* s) {
 		s->type = 4;
 		s->call = (struct nodeCall*) calloc(1, sizeof(struct nodeCall));
 		parseCall(s->call);
+	} else {
+		printf("ERROR: No statement was found inside the current procedure.\n");
+		exit(1);
 	}
 }
 
